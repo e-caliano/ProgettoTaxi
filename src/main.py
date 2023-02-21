@@ -17,6 +17,11 @@ def load_file(path):
 
     return df
 
+x = load_file('/Users/edoardocaliano/Desktop/PrgettoTaxi/Data/yellow_tripdata_2022-03.parquet')
+print(x)
+
+y = load_file('/Users/edoardocaliano/Desktop/PrgettoTaxi/Data/taxi+_zone_lookup.csv')
+print(y)
 
 
 
