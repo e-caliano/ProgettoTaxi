@@ -6,7 +6,6 @@ def load_file(path):
     return df
 
 x = load_file('/Users/edoardocaliano/Desktop/PrgettoTaxi/Data/yellow_tripdata_2022-03.parquet')
-print(x)
 
 
 
