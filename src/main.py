@@ -31,7 +31,9 @@ def Merge(df1,df2):
     df_total = pd.merge(left=df1, right=df2, on="id")
     #mostriamo le series necessarie
     df=df_total[["id", "Borough", "tpep_pickup_datetime", "tpep_dropoff_datetime"]]
-    return df
+    #elimino righe che hanno valori nulli nelle principali series
+    df_pulito=df.dropna(subset=['id','Borough','tpep_pickup_datetime', 'tpep_dropoff_datetime'])
+    return df_pulito
 
 
 
