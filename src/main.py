@@ -48,7 +48,7 @@ def toTimestamp():
     pass
 
 
-#funzione per trovare le durate effettive dei viaggi, il minimo e il massimo
+#funzione per trovare le durate effettive dei viaggi, il minimo ed il massimo
 def durate():
     pass
 
