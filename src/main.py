@@ -25,7 +25,22 @@ print(y)
 
 #funzione per unire il file parquet con il file csv
 def Merge(df1,df2):
-    pass
+    #rinominiamo le series (riferite agli id in comune) di entrambi con "id"
+    df1.rename(columns={
+        "VendorID": "id"
+    }, inplace=True)
+    df2.rename(columns={
+        "LocationID": "id"
+    }, inplace=True)
+    #facciamo un merge dei due dataframe collegandoli grazie ai rispettivi id in comune
+    df_total = pd.merge(left=df1, right=df2, on="id")
+    #mostriamo le series necessarie
+    df=df_total[["id", "Borough", "tpep_pickup_datetime", "tpep_dropoff_datetime"]]
+    return df
+
+
+
+
 
 
 
@@ -40,7 +55,7 @@ def toTimestamp():
     pass
 
 
-#funzione per trovare le durate effettive dei viaggi, il minimo e il massimo
+#funzione per trovare le durate effettive dei viaggi, il minimo ed il massimo
 def durate():
     pass
 
