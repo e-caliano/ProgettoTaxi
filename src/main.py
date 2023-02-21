@@ -2,7 +2,7 @@ import pandas as pd
 
 # funzione che crea un dataframe passando il path (eventualmente assoluto) del file
 def load_file(path):
-    # estraiamo l'estensione del file, split prende l'ele
+    # estraiamo l'estensione del file, split prende l'ultimo elemento direttamente dopo il punto
     extension = path.split(".")[-1]
 
     if extension == "csv":
@@ -18,6 +18,22 @@ def load_file(path):
     return df
 
 
+#funzione per unire il file parquet con il file csv
+def Merge(df1,df2):
+    pass
 
 
+#funzione per il filtraggio del dataframe totale
+def filter(df):
+    pass
+
+
+#funzione per trasformare le series delle partenze e degli arrivi in secondi, per poi dopo calcolare la durata effettiva
+def toTimestamp():
+    pass
+
+
+#funzione per trovare le durate effettive dei viaggi, il minimo e il massimo
+def durate():
+    pass
 
