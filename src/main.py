@@ -1,6 +1,10 @@
 import pandas as pd
 from datetime import datetime
-
+import os
+import pathlib
+import datetime
+import time
+import platform
 
 def load_file(path):
     """
@@ -8,7 +12,7 @@ def load_file(path):
     :param path: str
     :return: dataframe
     """
-    # estrazione delll'estensione del file
+    # estrazione dell'estensione del file
     extension = path.split(".")[-1]
 
     if extension == "csv":
@@ -43,7 +47,6 @@ def merge(df1,df2):
 
     # facciamo un merge dei due dataframe collegandoli grazie ai rispettivi id in comune
     df_total = pd.merge(left=df1, right=df2, on="id")
-
     # creazione del dataframe di interesse per i calcoli sui tragitti
     df = df_total[["id", "Borough", "tpep_pickup_datetime", "tpep_dropoff_datetime"]]
 
@@ -70,16 +73,49 @@ def durata(df):
     :param df: dataframe
     :return: dataframe
     """
+    # convertiamo le colonne delle date in oggetti datetime
+    df['tpep_pickup_datetime'] = pd.to_datetime(df['tpep_pickup_datetime'])
+    df['tpep_dropoff_datetime'] = pd.to_datetime(df['tpep_dropoff_datetime'])
 
-    df["Durata"] = pd.to_datetime(df["tpep_dropoff_datetime"]) - pd.to_datetime(df["tpep_pickup_datetime"])
+    # calcoliamo la durata di ogni corsa in secondi
+    df['durata_corsa'] = (df['tpep_dropoff_datetime'] - df['tpep_pickup_datetime']).dt.total_seconds()
 
+    df = df[df['durata_corsa'] > 0]
     return df
 
 
-x = load_file('/Users/edoardocaliano/Desktop/PrgettoTaxi/Data/yellow_tripdata_2022-03.parquet')
-y = load_file('/Users/edoardocaliano/Desktop/PrgettoTaxi/Data/taxi+_zone_lookup.csv')
-df_pulito = merge(x,y)
-df_pulito = filter(df_pulito)
-print(durata(df_pulito))
+
+
+def viaggio_più_breve(df):
+
+    """
+    :param df: dataframe
+    :return: riga del dataframe
+    """
+
+    # troviamo l'indice della riga che contiene il valore minimo della serie
+    indice_riga_minimo = df["durata_corsa"].idxmin()
+
+    # selezioniamo la riga del dataframe che contiene il valore minimo
+    riga_minimo = df.loc[indice_riga_minimo]
+
+    return riga_minimo
+
+
+def viaggio_più_lungo(df):
+
+    """
+    :param df: dataframe
+    :return: riga del dataframe
+    """
+
+    # troviamo l'indice della riga che contiene il valore massimo della serie
+    indice_riga_massimo = df["durata_corsa"].idxmax()
+
+    # selezioniamo la riga del dataframe che contiene il valore massimo
+    riga_massimo = df.loc[indice_riga_massimo]
+
+    return riga_massimo
+
 
 
