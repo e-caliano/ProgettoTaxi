@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import main
 
 # chiedi all'utente l'anno, i mesi e i nomi dei quartieri desiderati come input
 anno = input("Inserisci l'anno desiderato (formato YYYY): ")
@@ -38,8 +39,18 @@ for file_parquet in elenco_file_parquet:
 
     # controlliamo se il file corrente è stato selezionato dall'utente
     if anno_file == anno and mese_file in mesi:
-        # carichiamo il dataframe dei dati delle corse dei taxi dal file CSV
-        df = pd.read_parquet(file_parquet, engine="pyarrow")
+        # carichiamo il dataframe dei dati delle corse dei taxi dal file CSV tramite l'apposita function del modulo prova
+        df = main.load_file(file_parquet)
+
+        # facciamo il merge con il df_lookup tramite l'apposita function del modulo prova
+        df = main.merge(df)
+
+        # azione di filtraggio del df tramite apposita function del modulo prova
+        df = main.filter(df)
+
+        # calcolo e aggiunta delle durate dei tragitti tramite apposita function del modulo prova
+        df = main.durata(df)
+
         dfs.append(df)
 
 df_concatenato = pd.concat(dfs)
