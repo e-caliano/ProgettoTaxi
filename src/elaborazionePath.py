@@ -1,14 +1,21 @@
 import os
 import pandas as pd
 import main
+import os
+import sys
 
 # chiedi all'utente l'anno, i mesi e i nomi dei quartieri desiderati come input
 anno = input("Inserisci l'anno desiderato (formato YYYY): ")
 mesi = input("Inserisci i mesi desiderati (separati da virgola): ").split(',')
-quartieri = input("Inserisci i nomi dei quartieri desiderati (separati da virgola): ").split(',')
+quartieri_input = input("Inserisci i nomi dei quartieri separati da virgole (premere Invio per selezionare tutti i quartieri): ")
+
+if quartieri_input == "":
+    quartieri = None
+else:
+    quartieri = [q.lower() for q in quartieri_input.split(",")]
 
 # impostiamo il percorso della directory contenente i file PARQUET
-percorso_directory = '/Users/edoardocaliano/Desktop/PrgettoTaxi/Data'
+percorso_directory = os.path.abspath('../Data')
 
 # otteniamo l'elenco di tutti i file nella directory specificata
 elenco_file = os.listdir(percorso_directory)
@@ -45,11 +52,26 @@ for file_parquet in elenco_file_parquet:
         # facciamo il merge con il df_lookup tramite l'apposita function del modulo prova
         df = main.merge(df)
 
-        # azione di filtraggio del df tramite apposita function del modulo prova
-        df = main.filter(df)
+        if quartieri is not None:
 
-        # calcolo e aggiunta delle durate dei tragitti tramite apposita function del modulo prova
-        df = main.durata(df)
+            df = df[df['borough'].str.lower().isin(quartieri)]
+
+
+            if len(df) == 0:
+                print(f"Errore: Nessuna corsa trovata per tutti quartieri inseriti {quartieri}, runnare nuovamente il programma digitando il nome corretto per i quartieri desiderati")
+                exit()
+
+
+            # azione di filtraggio del df tramite apposita function del modulo prova
+            df = main.filter(df)
+
+            # calcolo e aggiunta delle durate dei tragitti tramite apposita function del modulo prova
+            df = main.durata(df)
+
+        else:
+
+            df = main.filter(df)
+            df = main.durata(df)
 
         dfs.append(df)
 
