@@ -83,10 +83,80 @@ for file_parquet in elenco_file_parquet:
             df = main.durata(df)
 
         dfs.append(df)
+print(main.viaggio_più_breve(dfs))
+print(main.viaggio_più_lungo(dfs))
+#df_concatenato = pd.concat(dfs)
+#print(df_concatenato)
 
-df_concatenato = pd.concat(dfs)
-print(df_concatenato)
+# dizionario = {}
+#
+# for i in range(len(mesi)):
+#     dizionario[mesi[i]] = [min_durata_corsa[i],max_durata_corsa[i]]
+#
+# print(dizionario)
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+# def viaggio_più_breve(dfs):
+#     """
+#     :param dfs: dataframe
+#     :return: riga del dataframe
+#     """
+
+#     min_durata_corsa = []
+#
+#     for frame in dfs:
+#
+#         # Calcola il valore minimo della serie 'durata_corsa'
+#         minimo = frame['durata_corsa'].min()
+#
+#         # Aggiungi il valore minimo alla lista 'min_durata_corsa'
+#         min_durata_corsa.append(minimo)
+#     print(f"'I minimi di ogni mese, in ordine di inserimento dei mesi, sono:' {min_durata_corsa}")
+#     print(min_durata_corsa)
+#     for i in min_durata_corsa:
+#         minimo_totale = min(min_durata_corsa)
+#
+#
+#     return minimo_totale
+#
+# print(f"'Il viaggio più breve è: ' {viaggio_più_breve(dfs)}")
+#
+#
+# def viaggio_più_lungo(dfs):
+#     """
+#     :param dfs: dataframe
+#     :return: riga del dataframe
+#     """
+#
+#     max_durata_corsa = []
+#
+#     for frame in dfs:
+#
+#         # Calcola il valore minimo della serie 'durata_corsa'
+#         massimo = frame['durata_corsa'].max()
+#
+#         # Aggiungi il valore minimo alla lista 'min_durata_corsa'
+#         max_durata_corsa.append(massimo)
+#     print(f"'I massimi di ogni mese, in ordine di inserimento dei mesi, sono:' {max_durata_corsa}")
+#
+#
+#     for i in max_durata_corsa:
+#         massimo_totale = max(max_durata_corsa)
+#
+#     return massimo_totale
+#
+# print(f"'Il viaggio più lungo è: ' {viaggio_più_lungo(dfs)}")
