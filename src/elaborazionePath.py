@@ -1,21 +1,30 @@
-import os
 import pandas as pd
 import main
 import os
 import sys
+
+
 
 # chiedi all'utente l'anno, i mesi e i nomi dei quartieri desiderati come input
 anno = input("Inserisci l'anno desiderato (formato YYYY): ")
 mesi = input("Inserisci i mesi desiderati (separati da virgola): ").split(',')
 quartieri_input = input("Inserisci i nomi dei quartieri separati da virgole (premere Invio per selezionare tutti i quartieri): ")
 
+
+
 if quartieri_input == "":
     quartieri = None
 else:
     quartieri = [q.lower() for q in quartieri_input.split(",")]
 
+# def imposta_directory():
+#     path = input("Digita il path della directory Data: ")
+#     return path
+
 # impostiamo il percorso della directory contenente i file PARQUET
-percorso_directory = os.path.abspath('../Data')
+percorso_directory = input("Digita il path della direcory Data: ")
+
+
 
 # otteniamo l'elenco di tutti i file nella directory specificata
 elenco_file = os.listdir(percorso_directory)
@@ -77,5 +86,7 @@ for file_parquet in elenco_file_parquet:
 
 df_concatenato = pd.concat(dfs)
 print(df_concatenato)
+
+
 
 
