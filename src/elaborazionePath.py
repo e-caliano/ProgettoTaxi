@@ -2,7 +2,7 @@ import pandas as pd
 import main
 import os
 import sys
-
+import matplotlib.pyplot as plt
 
 
 # chiedi all'utente l'anno, i mesi e i nomi dei quartieri desiderati come input
@@ -88,12 +88,54 @@ print(main.viaggio_più_lungo(dfs))
 #df_concatenato = pd.concat(dfs)
 #print(df_concatenato)
 
-# dizionario = {}
-#
-# for i in range(len(mesi)):
-#     dizionario[mesi[i]] = [min_durata_corsa[i],max_durata_corsa[i]]
-#
-# print(dizionario)
+def dizionario_per_plot(mesi):
+    """
+    :param mesi:lista
+    :return:
+    """
+    min_durata_corsa= main.viaggio_più_breve(dfs)[1]
+    max_durata_corsa=main.viaggio_più_lungo(dfs)[1]
+
+    dizionario = {}
+    for i in range(len(mesi)):
+        dizionario[mesi[i]] = [min_durata_corsa[i], max_durata_corsa[i]]
+    return dizionario
+dizionario= dizionario_per_plot(mesi)
+durate_minime = [dizionario[month][0] for month in mesi]
+durate_massime = [dizionario[month][1] for month in mesi]
+
+
+# Creazione dell'istogramma
+fig, ax = plt.subplots()
+ax.bar(dizionario.keys(), [valore[1]-valore[0] for valore in dizionario.values()], bottom=[valore[0] for valore in dizionario.values()], width=0.5)
+
+# Impostazione dei valori sull'asse y
+valori_y = [i*50000 for i in range(15)]  # Crea una lista di valori da 0 a 700000 con un intervallo di 100000
+plt.yticks(valori_y)
+
+
+#Impostazione dell'asse y
+#plt.ylim([0, 1000000])
+
+
+# Etichettatura degli assi
+plt.xlabel('Mesi')
+plt.ylabel('Secondi')
+
+# Visualizzazione dell'istogramma
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

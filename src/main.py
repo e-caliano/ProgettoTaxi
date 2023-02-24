@@ -102,8 +102,8 @@ def durata(df):
 
 def viaggio_più_breve(dfs):
     """
-    :param dfs: dataframe
-    :return: riga del dataframe
+    :param dfs: lista
+    :return: minimo e  lista
     """
 
     min_durata_corsa = []
@@ -116,20 +116,19 @@ def viaggio_più_breve(dfs):
         # Aggiungi il valore minimo alla lista 'min_durata_corsa'
         min_durata_corsa.append(minimo)
     print(f"'I minimi per ogni mese, in ordine di inserimento dei mesi, sono:' {min_durata_corsa}")
-    print(min_durata_corsa)
+
     for i in min_durata_corsa:
         minimo_totale = min(min_durata_corsa)
 
-
-    return minimo_totale
+    return minimo_totale,min_durata_corsa
 
 #print(f"'Il viaggio più breve è: ' {viaggio_più_breve(dfs)}")
 
 
 def viaggio_più_lungo(dfs):
     """
-    :param dfs: dataframe
-    :return: riga del dataframe
+    :param dfs: lista
+    :return: massimo e lista
     """
 
     max_durata_corsa = []
@@ -147,7 +146,7 @@ def viaggio_più_lungo(dfs):
     for i in max_durata_corsa:
         massimo_totale = max(max_durata_corsa)
 
-    return massimo_totale
+    return massimo_totale, max_durata_corsa
 
 #print(f"'Il viaggio più lungo è: ' {viaggio_più_lungo(dfs)}")
 
