@@ -105,6 +105,7 @@ dizionario= dizionario_per_plot(mesi)
 durate_minime = [dizionario[month][0] for month in mesi]
 durate_massime = [dizionario[month][1] for month in mesi]
 
+#ok
 
 # Creazione dell'istogramma
 fig, ax = plt.subplots()
