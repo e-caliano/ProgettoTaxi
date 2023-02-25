@@ -66,7 +66,8 @@ def merge(df):
     df_total = pd.merge(left=df, right=df_lookup, on="id")
     # creazione del dataframe di interesse per i calcoli sui tragitti
     df = df_total[["id", "borough", "tpep_pickup_datetime", "tpep_dropoff_datetime"]]
-
+    #Lascio solo le series senza righe con 'NaN'
+    df = df.loc[df[["borough", "tpep_pickup_datetime", "tpep_dropoff_datetime"]].notna().all(axis=1)]
     return df
 
 
@@ -99,34 +100,59 @@ def durata(df):
     return df
 
 
-def viaggio_più_breve(df):
+def viaggio_più_breve(dfs):
     """
-    :param df: dataframe
+    :param dfs: dataframe
     :return: riga del dataframe
     """
 
-    # troviamo l'indice della riga che contiene il valore minimo della serie
-    indice_riga_minimo = df["durata_corsa"].idxmin()
+    min_durata_corsa = []
 
-    # selezioniamo la riga del dataframe che contiene il valore minimo
-    riga_minimo = df.loc[indice_riga_minimo]
+    for frame in dfs:
 
-    return riga_minimo
+        # Calcola il valore minimo della serie 'durata_corsa'
+        minimo = frame['durata_corsa'].min()
+
+        # Aggiungi il valore minimo alla lista 'min_durata_corsa'
+        min_durata_corsa.append(minimo)
+    print(f"'I minimi per ogni mese, in ordine di inserimento dei mesi, sono:' {min_durata_corsa}")
+    print(min_durata_corsa)
+    for i in min_durata_corsa:
+        minimo_totale = min(min_durata_corsa)
 
 
-def viaggio_più_lungo(df):
+    return minimo_totale
+
+#print(f"'Il viaggio più breve è: ' {viaggio_più_breve(dfs)}")
+
+
+def viaggio_più_lungo(dfs):
     """
-    :param df: dataframe
+    :param dfs: dataframe
     :return: riga del dataframe
     """
 
-    # troviamo l'indice della riga che contiene il valore massimo della serie
-    indice_riga_massimo = df["durata_corsa"].idxmax()
+    max_durata_corsa = []
 
-    # selezioniamo la riga del dataframe che contiene il valore massimo
-    riga_massimo = df.loc[indice_riga_massimo]
+    for frame in dfs:
 
-    return riga_massimo
+        # Calcola il valore minimo della serie 'durata_corsa'
+        massimo = frame['durata_corsa'].max()
+
+        # Aggiungi il valore minimo alla lista 'min_durata_corsa'
+        max_durata_corsa.append(massimo)
+    print(f"'I massimi per ogni mese, in ordine di inserimento dei mesi, sono:' {max_durata_corsa}")
+
+
+    for i in max_durata_corsa:
+        massimo_totale = max(max_durata_corsa)
+
+    return massimo_totale
+
+#print(f"'Il viaggio più lungo è: ' {viaggio_più_lungo(dfs)}")
+
+
+
 
 
 
