@@ -55,7 +55,7 @@ def merge(df):
 
     # rinominazione delle series id di entrambi i dataframe
     df.rename(columns={
-        "VendorID": "id"
+        "PULocationID" : "id"
     }, inplace=True)
     df_lookup.rename(columns={
         "LocationID": "id",
@@ -64,10 +64,16 @@ def merge(df):
 
     # facciamo un merge dei due dataframe collegandoli grazie ai rispettivi id in comune
     df_total = pd.merge(left=df, right=df_lookup, on="id")
+
     # creazione del dataframe di interesse per i calcoli sui tragitti
     df = df_total[["id", "borough", "tpep_pickup_datetime", "tpep_dropoff_datetime"]]
+
     #Lascio solo le series senza righe con 'NaN'
     df = df.loc[df[["borough", "tpep_pickup_datetime", "tpep_dropoff_datetime"]].notna().all(axis=1)]
+
+    # Il dataframe non deve contenere il borough 'Unknown'
+    df = df[df['borough'] != 'Unknown']
+
     return df
 
 
@@ -115,7 +121,7 @@ def viaggio_più_breve(dfs):
 
         # Aggiungi il valore minimo alla lista 'min_durata_corsa'
         min_durata_corsa.append(minimo)
-    print(f"'I minimi per ogni mese, in ordine di inserimento dei mesi, sono:' {min_durata_corsa}")
+    print(f"'I minimi per ogni mese, in ordine, sono, in secondi:' {min_durata_corsa}")
 
     for i in min_durata_corsa:
         minimo_totale = min(min_durata_corsa)
@@ -140,7 +146,7 @@ def viaggio_più_lungo(dfs):
 
         # Aggiungi il valore minimo alla lista 'min_durata_corsa'
         max_durata_corsa.append(massimo)
-    print(f"'I massimi per ogni mese, in ordine di inserimento dei mesi, sono:' {max_durata_corsa}")
+    print(f"'I massimi per ogni mese, in ordine, sono, in secondi:' {max_durata_corsa}")
 
 
     for i in max_durata_corsa:

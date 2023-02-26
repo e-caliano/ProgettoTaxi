@@ -3,13 +3,133 @@ import main
 import os
 import sys
 import matplotlib.pyplot as plt
+def luogo_viaggio_maggiore(anno,mesi,percorso_directory):
+
+    # otteniamo l'elenco di tutti i file nella directory specificata
+    elenco_file = os.listdir(percorso_directory)
+
+    # impostiamo il prefisso del nome del file PARQUET desiderato
+    prefisso_nome_file = 'yellow_tripdata_'
+
+    # elenco vuoto di dataframe per ogni file PARQUET
+    dfs = []
+
+    # otteniamo solo l'elenco dei file PARQUET e aventi il prefisso desiderato
+    elenco_file_parquet = [os.path.join(percorso_directory, file) for file in elenco_file if file.endswith('.parquet') and file.startswith(prefisso_nome_file)]
+
+    # iteriamo su ogni file PARQUET selezionato e carichiamo i dati in un dataframe pandas
+    for file_parquet in elenco_file_parquet:
+
+        # lista che contiene gli elementi di elenco_file_parquet separati dal carattere '_'
+        file_info = file_parquet.split('_')
+
+        # selezione dell'ano dal file PARQUET selezionato
+        anno_file = file_info[2][:4]
+
+        # selezione del mese dal file PARQUET selezionato
+        mese_file = file_info[-1][5:7]
+        # print(anno_file)
+        # print(mese_file)
+
+        # controlliamo se il file corrente è stato selezionato dall'utente
+        if anno_file == anno and mese_file in mesi:
+            # carichiamo il dataframe dei dati delle corse dei taxi dal file CSV tramite l'apposita function del modulo prova
+            df = main.load_file(file_parquet)
+
+            # facciamo il merge con il df_lookup tramite l'apposita function del modulo prova
+            df = main.merge(df)
+
+            # azione di filtraggio del df tramite apposita function del modulo prova
+            df = main.filter(df)
+
+            # calcolo e aggiunta delle durate dei tragitti tramite apposita function del modulo prova
+            df = main.durata(df)
+
+            dfs.append(df)
+        df_concatenato = pd.concat(dfs)
+
+    #Ottengo la concatenazione dei vari dataframe di ogni mese con l'elemento di ogni borough e la sua durata massima
+    durata_massima_per_borough = df_concatenato.groupby('borough')['durata_corsa'].max()
+
+    #Creo un dizionario per poter gestire al meglio i borough e le loro durate
+    dizionario_borough={}
+    for borough, valore in durata_massima_per_borough.items():
+        dizionario_borough[borough] = valore
+
+    #Trovo il borough con valore più grande
+    borough_massimo = durata_massima_per_borough.idxmax()
+    print(f'Il quartiere dove è stato effettuato il viaggio maggiore è: {borough_massimo}')
+
+    return durata_massima_per_borough
+
+
+def luogo_viaggio_minore(anno,mesi,percorso_directory):
+
+    # otteniamo l'elenco di tutti i file nella directory specificata
+    elenco_file = os.listdir(percorso_directory)
+
+    # impostiamo il prefisso del nome del file PARQUET desiderato
+    prefisso_nome_file = 'yellow_tripdata_'
+
+    # elenco vuoto di dataframe per ogni file PARQUET
+    dfs = []
+
+    # otteniamo solo l'elenco dei file PARQUET e aventi il prefisso desiderato
+    elenco_file_parquet = [os.path.join(percorso_directory, file) for file in elenco_file if file.endswith('.parquet') and file.startswith(prefisso_nome_file)]
+
+    # iteriamo su ogni file PARQUET selezionato e carichiamo i dati in un dataframe pandas
+    for file_parquet in elenco_file_parquet:
+
+        # lista che contiene gli elementi di elenco_file_parquet separati dal carattere '_'
+        file_info = file_parquet.split('_')
+
+        # selezione dell'ano dal file PARQUET selezionato
+        anno_file = file_info[2][:4]
+
+        # selezione del mese dal file PARQUET selezionato
+        mese_file = file_info[-1][5:7]
+        # print(anno_file)
+        # print(mese_file)
+
+        # controlliamo se il file corrente è stato selezionato dall'utente
+        if anno_file == anno and mese_file in mesi:
+            # carichiamo il dataframe dei dati delle corse dei taxi dal file CSV tramite l'apposita function del modulo prova
+            df = main.load_file(file_parquet)
+
+            # facciamo il merge con il df_lookup tramite l'apposita function del modulo prova
+            df = main.merge(df)
+
+            # azione di filtraggio del df tramite apposita function del modulo prova
+            df = main.filter(df)
+
+            # calcolo e aggiunta delle durate dei tragitti tramite apposita function del modulo prova
+            df = main.durata(df)
+
+            dfs.append(df)
+        df_concatenato = pd.concat(dfs)
+
+    #Ottengo la concatenazione dei vari dataframe di ogni mese con l'elemento di ogni borough e la sua durata massima
+    durata_minima_per_borough = df_concatenato.groupby('borough')['durata_corsa'].min()
+
+    #Creo un dizionario per poter gestire al meglio i borough e le loro durate
+    dizionario_borough={}
+    for borough, valore in durata_minima_per_borough.items():
+        dizionario_borough[borough] = valore
+
+    #Trovo il borough con valore più grande
+    borough_minima = durata_minima_per_borough.idxmin()
+    print(f'Il quartiere dove è stato effettuato il viaggio minore è: {borough_minima}')
+
+    return durata_minima_per_borough
+
+
+
 
 
 # chiedi all'utente l'anno, i mesi e i nomi dei quartieri desiderati come input
 anno = input("Inserisci l'anno desiderato (formato YYYY): ")
 mesi = input("Inserisci i mesi desiderati (separati da virgola): ").split(',')
 quartieri_input = input("Inserisci i nomi dei quartieri separati da virgole (premere Invio per selezionare tutti i quartieri): ")
-
 
 
 if quartieri_input == "":
@@ -83,8 +203,8 @@ for file_parquet in elenco_file_parquet:
             df = main.durata(df)
 
         dfs.append(df)
-print(main.viaggio_più_breve(dfs))
-print(main.viaggio_più_lungo(dfs))
+#print(main.viaggio_più_breve(dfs))
+#print(main.viaggio_più_lungo(dfs))
 #df_concatenato = pd.concat(dfs)
 #print(df_concatenato)
 
@@ -100,109 +220,59 @@ def dizionario_per_plot(mesi):
     for i in range(len(mesi)):
         dizionario[mesi[i]] = [min_durata_corsa[i], max_durata_corsa[i]]
     dizionario_ordinato = dict(sorted(dizionario.items(), key=lambda x: x[0]))
+
     return dizionario_ordinato
+# dizionario= dizionario_per_plot(mesi)
+# durate_minime = [dizionario[month][0] for month in mesi]
+# durate_massime = [dizionario[month][1] for month in mesi]
+
+def crea_istogramma_durata_viaggi(dizionario):
+    """
+    Crea un istogramma della durata dei viaggi, suddivisi per mese.
+
+    :param dizionario: dizionario contenente le durate dei viaggi per ogni mese
+    :return: None
+    """
+
+    # Creazione dell'istogramma
+    fig, ax = plt.subplots()
+    valori = [valore[1] - valore[0] for valore in dizionario.values()]
+    bottom = [valore[0] for valore in dizionario.values()]
+    colori = ['red', 'blue', 'green', 'orange', 'purple', 'pink', 'brown', 'gray', 'olive', 'teal', 'navy',
+              'maroon']  # Lista di colori per le colonne
+
+    ax.bar(dizionario.keys(), valori, bottom=bottom, width=0.5, color=colori)
+
+    # Impostazione dei valori sull'asse y
+    valori_y = [i * 50000 for i in range(15)]  # Crea una lista di valori da 0 a 700000 con un intervallo di 100000
+    plt.yticks(valori_y)
+    plt.title("DURATA VIAGGI")
+
+    # Etichettatura degli assi
+    plt.xlabel('Mesi')
+    plt.ylabel('Secondi')
+
+    # Visualizzazione dell'istogramma
+    plt.show()
+
+
+#RICHIAMI DELLE FUNZIONI:
+
+print(main.durata(df)) #Per vedere le durate di tutti i borough in dataframe
+
+print(luogo_viaggio_maggiore(anno,mesi,percorso_directory)) #stampa dataframe di borough e durate massime, e anche il viaggio maggiore
+print(luogo_viaggio_minore(anno,mesi,percorso_directory))  #stampa dataframe di borough e durate minime, e anche il viaggio minore
+dizionario_per_plot(mesi) #grazie a questo stampo anche la funzione viaggio_più_breve e viaggio_più_lungo che son richiamati dentro
 dizionario= dizionario_per_plot(mesi)
-durate_minime = [dizionario[month][0] for month in mesi]
-durate_massime = [dizionario[month][1] for month in mesi]
 
-#ok
+crea_istogramma_durata_viaggi(dizionario) #E' l'istogramma delle durate per mesi scelti
 
-# Creazione dell'istogramma
-fig, ax = plt.subplots()
-valori = [valore[1]-valore[0] for valore in dizionario.values()]
-bottom = [valore[0] for valore in dizionario.values()]
-colori = ['red', 'blue', 'green', 'orange', 'purple', 'pink', 'brown', 'gray', 'olive', 'teal', 'navy', 'maroon']  # Lista di colori per le colonne
+#####COSA MANCA
 
-ax.bar(dizionario.keys(), valori, bottom=bottom, width=0.5, color=colori)
-
-# Impostazione dei valori sull'asse y
-valori_y = [i*50000 for i in range(15)]  # Crea una lista di valori da 0 a 700000 con un intervallo di 100000
-plt.yticks(valori_y)
-plt.title("DURATA VIAGGI")
-
-#Impostazione dell'asse y
-#plt.ylim([0, 1000000])
-
-# Etichettatura degli assi
-plt.xlabel('Mesi')
-plt.ylabel('Secondi')
-
-# Visualizzazione dell'istogramma
-plt.show()
+#TROVARE IL VIAGGIO MINIMO E MAGGIMO PARTENDO DALLA FUNZIONE DEL LUOGO_VIAGGIO_MAGGIORE E TRACCIANDO IL MASSIMO E RESTITUENDO IL LUOGO
+#DA CREARE ISTOGRAMMA PER VISUALIZZARE DOVE SONO I VIAGGI PIù LUNGHI
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# def viaggio_più_breve(dfs):
-#     """
-#     :param dfs: dataframe
-#     :return: riga del dataframe
-#     """
-
-#     min_durata_corsa = []
-#
-#     for frame in dfs:
-#
-#         # Calcola il valore minimo della serie 'durata_corsa'
-#         minimo = frame['durata_corsa'].min()
-#
-#         # Aggiungi il valore minimo alla lista 'min_durata_corsa'
-#         min_durata_corsa.append(minimo)
-#     print(f"'I minimi di ogni mese, in ordine di inserimento dei mesi, sono:' {min_durata_corsa}")
-#     print(min_durata_corsa)
-#     for i in min_durata_corsa:
-#         minimo_totale = min(min_durata_corsa)
-#
-#
-#     return minimo_totale
-#
-# print(f"'Il viaggio più breve è: ' {viaggio_più_breve(dfs)}")
-#
-#
-# def viaggio_più_lungo(dfs):
-#     """
-#     :param dfs: dataframe
-#     :return: riga del dataframe
-#     """
-#
-#     max_durata_corsa = []
-#
-#     for frame in dfs:
-#
-#         # Calcola il valore minimo della serie 'durata_corsa'
-#         massimo = frame['durata_corsa'].max()
-#
-#         # Aggiungi il valore minimo alla lista 'min_durata_corsa'
-#         max_durata_corsa.append(massimo)
-#     print(f"'I massimi di ogni mese, in ordine di inserimento dei mesi, sono:' {max_durata_corsa}")
-#
-#
-#     for i in max_durata_corsa:
-#         massimo_totale = max(max_durata_corsa)
-#
-#     return massimo_totale
-#
-# print(f"'Il viaggio più lungo è: ' {viaggio_più_lungo(dfs)}")
