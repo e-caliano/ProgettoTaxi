@@ -116,14 +116,18 @@ def luogo_viaggio_minore(anno,mesi,percorso_directory):
     for borough, valore in durata_minima_per_borough.items():
         dizionario_borough[borough] = valore
 
-    #Trovo il borough con valore più grande
+    # utilizziamo la funzione value_counts() per ottenere il numero di occorrenze di ciascun valore di durata minima per borough
+    occorrenze_durata_minima = durata_minima_per_borough.value_counts()
+    # troviamo il quartiere con la durata minima
+    durata_minima = durata_minima_per_borough.min()
     borough_minima = durata_minima_per_borough.idxmin()
-    print(f'Il quartiere dove è stato effettuato il viaggio minore è: {borough_minima}')
-
+    # se ci sono diversi quartieri con la durata minima, stampiamo tutti i nomi dei quartieri corrispondenti
+    if occorrenze_durata_minima[durata_minima] > 1:
+        boroughs_minimi = durata_minima_per_borough[durata_minima_per_borough == durata_minima].index.tolist()
+        print(f"I quartieri dove è stato effettuato il viaggio minore sono: {', '.join(boroughs_minimi)}")
+    else:
+        print(f"Il quartiere dove è stato effettuato il viaggio minore è: {borough_minima}")
     return durata_minima_per_borough
-
-
-
 
 
 # chiedi all'utente l'anno, i mesi e i nomi dei quartieri desiderati come input
@@ -269,7 +273,6 @@ crea_istogramma_durata_viaggi(dizionario) #E' l'istogramma delle durate per mesi
 
 #####COSA MANCA
 
-#TROVARE IL VIAGGIO MINIMO E MAGGIMO PARTENDO DALLA FUNZIONE DEL LUOGO_VIAGGIO_MAGGIORE E TRACCIANDO IL MASSIMO E RESTITUENDO IL LUOGO
 #DA CREARE ISTOGRAMMA PER VISUALIZZARE DOVE SONO I VIAGGI PIù LUNGHI
 
 
