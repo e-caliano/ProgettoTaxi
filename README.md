@@ -22,46 +22,15 @@ Per poter eseguire il programma si eseguano i seguenti passaggi:
 
  	Digita il path della direcory Data: /Users/edoardocaliano/Desktop/PrgettoTaxi/Data
 
-           id        borough  ... tpep_dropoff_datetime durata_corsa
- 0        163      Manhattan  ...   2022-04-01 00:58:33       2240.0
- 1        163      Manhattan  ...   2022-04-01 00:21:41       1251.0
- 2        163      Manhattan  ...   2022-04-01 00:49:57        199.0
- 3        163      Manhattan  ...   2022-04-01 01:10:44        788.0
- 4        163      Manhattan  ...   2022-04-01 00:25:31        428.0
- ...      ...            ...  ...                   ...          ...
- 3599915  204  Staten Island  ...   2022-04-28 23:40:47          5.0
- 3599916  204  Staten Island  ...   2022-04-28 23:45:01         15.0
- 3599917  204  Staten Island  ...   2022-04-28 23:46:59         13.0
- 3599918  204  Staten Island  ...   2022-04-28 23:50:57         11.0
- 3599919   59          Bronx  ...   2022-04-01 12:30:00       1980.0
+In output verranno visualizzate i seguenti elementi:
+	
+	- dataframe dove per ogni quartiere, mese e anno scelti, sarà mostrato la durata dei viaggi (secondi);
+	- quartiere dove è stato mostrato il viaggio con maggiore durata (nel caso in cui si volesse analizzare tutta NY);
+	- dataframe dove vengono mostrati tutti i borough con i rispettivi viaggi di durata maggiore (secondi);
+	- quartiere dove è stato mostrato il viaggio con minore durata (nel caso in cui si volesse analizzare tutta NY);
+	- dataframe dove vengono mostrati tutti i borough con i rispettivi viaggi di durata minore (secondi);
+	- lista in cui vengono mostrati, in ordine di mese tra quelli inseriti, la durata dei viaggi minimi e massimi;
+	- un plot dei risultati della riga precedente.  
 
-
-
- Il quartiere dove è stato effettuato il viaggio maggiore è: Manhattan
- borough
- Bronx             86086.0
- Brooklyn          87090.0
- EWR               21074.0
- Manhattan        482262.0
- Queens           345206.0
- Staten Island     15005.0
-
-
- I quartieri dove è stato effettuato il viaggio minore sono: Bronx, Brooklyn, EWR, Manhattan, Queens, Staten Island
- borough
- Bronx            1.0
- Brooklyn         1.0
- EWR              1.0
- Manhattan        1.0
- Queens           1.0
- Staten Island    1.0
-
- 'I minimi per ogni mese, in ordine, sono, in secondi:' [1.0, 1.0]
-
- 'I massimi per ogni mese, in ordine, sono, in secondi:' [482262.0, 209739.0]
-
- 'I minimi per ogni mese, in ordine, sono, in secondi:' [1.0, 1.0]
-
- 'I massimi per ogni mese, in ordine, sono, in secondi:' [482262.0, 209739.0] 
 
 # Alla fine del programma dovrebbe essere visualizzato a schermo l'istogramma con le durate dei tragitti per i mesi dell'anno che sono stati selezionati
