@@ -3,8 +3,11 @@ import os
 from elaborazione import merge_and_filter
 from elaborazione import durata
 from elaborazione import merge_and_filter_per_tutti_i_quartieri
-from post_elaborazione import min_max_durata
-
+from elaborazione import min_max_durata
+from post_elaborazione import export_to_csv
+from post_elaborazione import export_min_max_durata_to_csv
+import matplotlib.pyplot as plt
+from plot import plot_durata_massima_per_quartiere
 
 def carica_informazioni(anno, mese, path):
     nome_file = f'yellow_tripdata_{anno}-{mese}.parquet'
@@ -36,13 +39,11 @@ def richiesta_utente():
 
 
 df_list,quartieri_list = richiesta_utente()
-lookup_df = pd.read_csv(r'C:\Users\gaeta\OneDrive\Documenti\ProgettoTaxi\ProgettoTaxi\Data\taxi+_zone_lookup.csv')
-merged_list = merge_and_filter(df_list, lookup_df, quartieri_list)
+merged_list = merge_and_filter(df_list, quartieri_list)
 x=durata(merged_list)
-print(x)
-merged_list2 = merge_and_filter_per_tutti_i_quartieri(df_list, lookup_df)
-#applico la durata alla lista con tutti i quartieri
+merged_list2 = merge_and_filter_per_tutti_i_quartieri(df_list)
 y = durata(merged_list2)
-#applico la funzione di ricerca di minimo e massimo
-z = min_max_durata(y)
-print(z)
+z,t = min_max_durata(y)
+export_to_csv(x, 'Durate_per_quartiere_cercato_ufficiale')
+export_min_max_durata_to_csv(z,t,'Durate_minima_e_massima')
+plot_durata_massima_per_quartiere(y, 'Istogramma')
