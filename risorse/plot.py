@@ -23,5 +23,5 @@ def plot_durata_massima_per_quartiere(merged_list, filename):
     plt.xlabel('Quartiere')
     plt.ylabel('Durata massima (s)')
     # Salvo l'istogramma come file png
-    plt.savefig(filename + '.png')
+    plt.savefig("output/" + filename + '.png')
     print(f"L'istogramma è stato salvato nel file {filename}.png")

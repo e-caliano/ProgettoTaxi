@@ -8,14 +8,14 @@ def export_to_csv(merged_list, filename):
     # Ordina il DataFrame in ordine decrescente di durata
     merged_df.sort_values(by='durata', ascending=False, inplace=True)
     # Scrive il file CSV
-    merged_df.to_csv(filename + '.csv', index=False)
+    merged_df.to_csv("output/" + filename + '.csv', index=False)
     print(f"I dati sono stati esportati nel file {filename}.csv")
 
 def export_min_max_durata_to_csv(min_durata, max_durata,filename):
     # Concatena i DataFrame di min_durata e max_durata in uno unico
     df = pd.concat([min_durata, max_durata], axis=0, ignore_index=True)
     # Scrive il file CSV
-    df.to_csv(filename + '.csv', index=False)
+    df.to_csv("output/" + filename + '.csv', index=False)
     print(f"I dati sono stati esportati nel file {filename}.csv")
 
 
@@ -42,5 +42,5 @@ def plot_durata_massima_per_quartiere(merged_list, filename):
     plt.xlabel('Quartiere')
     plt.ylabel('Durata massima (s)')
     # Salvo l'istogramma come file png
-    plt.savefig(filename + '.png')
+    plt.savefig("output/" + filename + '.png')
     print(f"L'istogramma è stato salvato nel file {filename}.png")
