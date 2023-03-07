@@ -3,9 +3,14 @@ import os
 
 
 def merge_and_filter(df_list, quartieri_list):
+    """
+    :param df_list: lista
+    :param quartieri_list:lista
+    :return: lista di dataframes
+    """
+    #leggo il file csv
     lookup_df = pd.read_csv('../Data/taxi+_zone_lookup.csv')
 
-    #lookup_df = pd.read_csv(r'C:\Users\gaeta\OneDrive\Documenti\ProgettoTaxi\ProgettoTaxi\Data\taxi+_zone_lookup.csv')
     #creo una lista vuota così posso tenere tutti i file singolarmente mergiati
     merged_list =[]
     #Cambio il nome delle colonne dei file parquet
@@ -22,8 +27,6 @@ def merge_and_filter(df_list, quartieri_list):
 
         #seleziono solo le colonne richieste
         merged_df = merged_df[["id", "borough", "tpep_pickup_datetime", "tpep_dropoff_datetime"]]
-
-        ################DOBBIAMO AGGIUSTARE PER POTER PERMETTERE DI EFFETTUARE LE ANALISI SUCCESSIVE SU TUTTI I BOROUGH
 
         #filtro per i quartieri di interesse
         merged_df = merged_df[merged_df['borough'].isin(quartieri_list)]
@@ -46,7 +49,12 @@ def merge_and_filter(df_list, quartieri_list):
 
 
 def merge_and_filter_per_tutti_i_quartieri(df_list):
-    lookup_df = pd.read_csv(r'C:\Users\gaeta\OneDrive\Documenti\ProgettoTaxi\ProgettoTaxi\Data\taxi+_zone_lookup.csv')
+    """
+    :param df_list: lista di dataframes
+    :return: lista di dataframes
+    """
+    #sto studiando il caso in cui voglio tutti i quartieri
+    lookup_df = pd.read_csv('../Data/taxi+_zone_lookup.csv')
     merged_list = []
     for i in df_list:
         i.rename(columns={"PULocationID": "id"}, inplace=True)
@@ -66,6 +74,10 @@ def merge_and_filter_per_tutti_i_quartieri(df_list):
 
 
 def durata(merged_list):
+    """
+    :param merged_list: lista di dataframes
+    :return: lista di dataframes
+    """
     for df in merged_list:
         # Converto le date in formato datetime
         df['tpep_pickup_datetime'] = pd.to_datetime(df['tpep_pickup_datetime'])
@@ -81,14 +93,20 @@ def durata(merged_list):
 
 
 def min_max_durata(merged_list):
+    """
+    :param merged_list: lista di dataframes
+    :return: due dataframes
+    """
     # Lista per le durate minime e massime
     durata_minima = []
     durata_massima = []
 
     for df in merged_list:
+        #cerco, per ogni dataframe, la lista con valore minimo e massimo
         durata_minima.append(df.loc[df['durata'].idxmin()])
         durata_massima.append(df.loc[df['durata'].idxmax()])
 
+    #Trasformo le liste con le durate in dataframe
     # Trova la maggiore tra le durate massime e la minore tra le durate minime
     durata_minima = pd.DataFrame(durata_minima)
     durata_massima = pd.DataFrame(durata_massima)
