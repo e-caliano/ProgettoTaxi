@@ -10,7 +10,7 @@ Per poter eseguire il programma si eseguano i seguenti passaggi:
  4) Lanciare il modulo "Main_ProgettoTaxi.py" dove verranno chiesti i seguenti campi:
 	- Inserisci l'anno desiderato (formato YYYY):
 	- Inserisci i mesi desiderati (separati da virgola):
-	- Inserisci i nomi dei quartieri separati da virgole, i quartieri sono: "Manhattan", "EWR", "Staten Island", "Bronx", "Queens", "Brooklyn", possono essere scritti in minuscolo e se si inserisce un quartiere 
+	- Inserisci i nomi dei quartieri separati da virgole, i quartieri sono: "Manhattan", "EWR", "Staten Island", "Bronx", "Queens", "Brooklyn", se si inserisce un quartiere 
 	  non presente, esso non verrà preso in considerazione. Se non viene inserito nessun quartiere, l'output che riguarda i quartieri da visualizzare sarà un dataframe vuoto!
 	- Digita il path della directory Data:
 
