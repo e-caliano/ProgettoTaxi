@@ -4,10 +4,11 @@
 
 Per poter eseguire il programma si eseguano i seguenti passaggi:
 
- 1) Creare una cartella "Data" dove posizionare i file .PARQUET;
- 2) Creare la directory "output" dove verrano caricati gli output (qualora la cartella non fosse scaricata o presente nel progetto);
- 3) Salvare il Path della cartella "Data" (opzionale, ma strettamente consigliato);
- 4) Lanciare il modulo "Main_ProgettoTaxi.py" dove verranno chiesti i seguenti campi:
+ 1) Fare riferimento alla directory "src" e ai suoi file con "_prova" (sono questi quelli da prendere in considerazione)
+ 2) Creare una cartella "Data" dove posizionare i file .PARQUET;
+ 3) Creare la directory "output" dove verrano caricati gli output (qualora la cartella non fosse scaricata o presente nel progetto);
+ 4) Salvare il Path della cartella "Data" (opzionale, ma strettamente consigliato);
+ 5) Lanciare il modulo "Main_prova.py" dove verranno chiesti i seguenti campi:
 	- Inserisci l'anno desiderato (formato YYYY):
 	- Inserisci i mesi desiderati (separati da virgola):
 	- Inserisci i nomi dei quartieri separati da virgole, i quartieri sono: "Manhattan", "EWR", "Staten Island", "Bronx", "Queens", "Brooklyn", se si inserisce un quartiere 
